@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الهيئة التدريسية - كلية نشامى الأعمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    </ul>
+    </nav>
+    </div>
+    </header>
+
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="container">
+            <div class="ticker-content" id="news-ticker-content">
+                جاري تحميل الأخبار...
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 40px 20px;">
+        <h2 style="margin-bottom: 20px; color: var(--primary-color);">أعضاء الهيئة التدريسية</h2>
+
+        <!-- Search -->
+        <div class="form-group">
+            <input type="text" id="search-input" class="form-control" placeholder="ابحث عن عضو هيئة تدريس بالاسم..."
+                onkeyup="filterStaff()">
+        </div>
+
+        <!-- Staff Grid -->
+        <div class="grid" id="staff-grid">
+            <!-- Staff cards will be injected here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/nashamabuju" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/nashama_business" target="_blank"><i
+                        class="fab fa-instagram"></i></a>
+            </div>
+            <p>جميع الحقوق محفوظة &copy; 2025 Nashama Business</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStaffList(window.appData.staff);
+        });
+
+        function renderStaffList(staffList) {
+            const grid = document.getElementById('staff-grid');
+            if (staffList.length === 0) {
+                grid.innerHTML = '<p>لا يوجد أعضاء هيئة تدريس حالياً.</p>';
+                return;
+            }
+
+            grid.innerHTML = staffList.map(s => {
+                const deptName = Helpers.getDeptName(s.department_id, window.appData.departments);
+                return `
+                <div class="card">
+                    <img src="${s.image || 'https://via.placeholder.com/300x200?text=No+Image'}" alt="${s.name}">
+                    <div class="card-body">
+                        <h3 class="card-title">${s.name}</h3>
+                        <p class="mb-2"><strong>${s.academic_rank}</strong> - ${deptName}</p>
+                        <p><i class="fas fa-envelope"></i> ${s.email || 'غير متوفر'}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> مبنى ${s.building || '-'} / ط ${s.floor || '-'} / مكتب ${s.office || '-'}</p>
+                        
+                        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                        
+                        <h4>الساعات المكتبية:</h4>
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>اليوم</th>
+                                    <th>الوقت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="schedule-row" data-day="sunday"><td>الأحد</td><td>${s.office_hours.sun || '-'}</td></tr>
+                                <tr class="schedule-row" data-day="monday"><td>الاثنين</td><td>${s.office_hours.mon || '-'}</td></tr>
+                                <tr class="schedule-row" data-day="tuesday"><td>الثلاثاء</td><td>${s.office_hours.tue || '-'}</td></tr>
+                                <tr class="schedule-row" data-day="wednesday"><td>الأربعاء</td><td>${s.office_hours.wed || '-'}</td></tr>
+                                <tr class="schedule-row" data-day="thursday"><td>الخميس</td><td>${s.office_hours.thu || '-'}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            Helpers.highlightToday();
+        }
+
+        function filterStaff() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = window.appData.staff.filter(s => s.name.toLowerCase().includes(query));
+            renderStaffList(filtered);
+        }
+    </script>
+</body>
+
+</html>

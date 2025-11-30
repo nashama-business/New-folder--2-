@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المواد الدراسية - كلية نشامى الأعمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .accordion-item {
+            background: var(--white);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 15px 20px;
+            background: var(--primary-color);
+            color: var(--white);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-body {
+            display: none;
+            padding: 20px;
+        }
+
+        .accordion-body.active {
+            display: block;
+        }
+
+        .sub-accordion-item {
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .sub-accordion-header {
+            padding: 10px 15px;
+            background: #f9f9f9;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .sub-accordion-body {
+            display: none;
+            padding: 15px;
+        }
+
+        .sub-accordion-body.active {
+            display: block;
+        }
+
+        .material-link {
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .material-link:hover {
+            background-color: #f0f0f0;
+            padding-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    </ul>
+    </nav>
+    </div>
+    </header>
+
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="container">
+            <div class="ticker-content" id="news-ticker-content">
+                جاري تحميل الأخبار...
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 40px 20px;">
+        <h2 style="margin-bottom: 20px; color: var(--primary-color);">المواد الدراسية</h2>
+
+        <div id="materials-tree">
+            <!-- Tree will be injected here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/nashamabuju" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/nashama_business" target="_blank"><i
+                        class="fab fa-instagram"></i></a>
+            </div>
+            <p>جميع الحقوق محفوظة &copy; 2025 Nashama Business</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMaterialsTree();
+        });
+
+        function renderMaterialsTree() {
+            const container = document.getElementById('materials-tree');
+
+            if (window.appData.departments.length === 0) {
+                container.innerHTML = '<p>لا توجد بيانات لعرضها.</p>';
+                return;
+            }
+
+            container.innerHTML = window.appData.departments.map(dept => {
+                const deptMajors = window.appData.majors.filter(m => m.department_id === dept.id);
+
+                const majorsHtml = deptMajors.map(major => {
+                    const majorMaterials = window.appData.materials.filter(mat => mat.major_id === major.id);
+
+                    const materialsHtml = majorMaterials.length > 0
+                        ? majorMaterials.map(mat => `
+                            <a href="${mat.link}" target="_blank" class="material-link">
+                                <i class="fab fa-google-drive"></i> ${mat.name}
+                                ${mat.syllabus_url ? `<span style="font-size:0.8em; color:#666; float:left;">(الخطة: <a href="${mat.syllabus_url}" target="_blank">رابط</a>)</span>` : ''}
+                            </a>
+                        `).join('')
+                        : '<p style="padding:10px; color:#777;">لا توجد مواد مضافة.</p>';
+
+                    return `
+                        <div class="sub-accordion-item">
+                            <div class="sub-accordion-header" onclick="toggleAccordion(this)">
+                                <i class="fas fa-graduation-cap"></i> ${major.name}
+                            </div>
+                            <div class="sub-accordion-body">
+                                ${materialsHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fas fa-building"></i> قسم ${dept.name}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-body">
+                            ${majorsHtml || '<p>لا توجد تخصصات.</p>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleAccordion(element) {
+            const body = element.nextElementSibling;
+            body.classList.toggle('active');
+
+            // Toggle icon if exists
+            const icon = element.querySelector('.fa-chevron-down');
+            if (icon) {
+                icon.style.transform = body.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+                icon.style.transition = 'transform 0.3s';
+            }
+        }
+    </script>
+</body>
+
+</html>
