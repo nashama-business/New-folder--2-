@@ -12,9 +12,23 @@
 
 <body>
 
-    </ul>
-    </nav>
-    </div>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1><i class="fas fa-university"></i> نشامى الأعمال</h1>
+            </div>
+            <nav>
+                <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+                <ul>
+                    <li><a href="index.html" class="active">الرئيسية</a></li>
+                    <li><a href="staff.html">الهيئة التدريسية</a></li>
+                    <li><a href="facilities.html">المرافق</a></li>
+                    <li><a href="materials.html">المواد الدراسية</a></li>
+                    <li><a href="admin.html" target="_blank">تسجيل الدخول</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <!-- News Ticker -->
@@ -30,14 +44,45 @@
     <section class="hero">
         <div class="container">
             <h2>مرحباً بكم في كلية نشامى الأعمال</h2>
-            <a href="https://www.facebook.com/nashamabuju" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/nashama_business" target="_blank"><i class="fab fa-instagram"></i></a>
+            <p>نصنع قادة المستقبل في عالم المال والأعمال</p>
+            <br>
+            <a href="staff.html" class="btn">تعرف على كادرنا</a>
         </div>
-        <p>جميع الحقوق محفوظة &copy; 2025 Nashama Business</p>
-        </div>
-        </footer>
+    </section>
 
-        <script src="script.js"></script>
+    <!-- Features Section -->
+    <section class="container" style="padding: 60px 20px;">
+        <div class="grid">
+            <div class="card text-center" style="padding: 40px;">
+                <i class="fas fa-chalkboard-teacher fa-3x"
+                    style="color: var(--primary-color); margin-bottom: 20px;"></i>
+                <h3>الهيئة التدريسية</h3>
+            </div>
+            <div class="card text-center" style="padding: 40px;">
+                <i class="fas fa-laptop-code fa-3x" style="color: var(--primary-color); margin-bottom: 20px;"></i>
+                <h3>مرافق الكلية</h3>
+            </div>
+            <div class="card text-center" style="padding: 40px;">
+                <i class="fas fa-book-open fa-3x" style="color: var(--primary-color); margin-bottom: 20px;"></i>
+                <h3>مناهج متطورة</h3>
+                <p>خطط دراسية تواكب متطلبات سوق العمل المحلي والعالمي.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/nashamabuju" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/nashama_business" target="_blank"><i
+                        class="fab fa-instagram"></i></a>
+            </div>
+            <p>جميع الحقوق محفوظة &copy; 2025 Nashama Business</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
